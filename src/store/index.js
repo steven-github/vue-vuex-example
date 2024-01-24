@@ -6,7 +6,7 @@ export default createStore({
     tasks: [
       { id: 1, text: "Learn Vue", completed: false },
       { id: 2, text: "Build a Vuex app", completed: false },
-      { id: 3, text: "Implement filters", completed: true },
+      { id: 3, text: "Implement filters", completed: false },
       // ... add more tasks as needed
     ],
     products: [
