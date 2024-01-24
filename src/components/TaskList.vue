@@ -19,19 +19,25 @@
 </template>
 
 <script>
+import { computed } from "vue";
+import { useStore } from "vuex";
+
 export default {
-  computed: {
-    tasks() {
-      return this.$store.state.tasks;
-    },
-    completedTasks() {
-      return this.$store.getters.completedTasks;
-    },
-  },
-  methods: {
-    toggleTask(taskId) {
-      this.$store.dispatch("toggleTask", taskId);
-    },
+  setup() {
+    const store = useStore();
+
+    const tasks = computed(() => store.state.tasks);
+    const completedTasks = computed(() => store.getters.completedTasks);
+
+    const toggleTask = (taskId) => {
+      store.dispatch("toggleTask", taskId);
+    };
+
+    return {
+      tasks,
+      completedTasks,
+      toggleTask,
+    };
   },
 };
 </script>
