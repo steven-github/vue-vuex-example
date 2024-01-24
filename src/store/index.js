@@ -1,15 +1,13 @@
 // src/store/index.js
-import Vue from "vue";
-import Vuex from "vuex";
+import { createStore } from "vuex";
 
-Vue.use(Vuex);
-
-export default new Vuex.Store({
+export default createStore({
   state: {
     tasks: [
-      { id: 1, text: "Learn Vue 3", completed: false },
+      { id: 1, text: "Learn Vue", completed: false },
       { id: 2, text: "Build a Vuex app", completed: false },
-      { id: 3, text: "Implement filters", completed: false },
+      { id: 3, text: "Implement filters", completed: true },
+      // ... add more tasks as needed
     ],
     products: [
       { id: 1, name: "Product A", price: 20 },
@@ -28,10 +26,14 @@ export default new Vuex.Store({
       };
       state.tasks.push(newTask);
     },
+    removeTask(state, taskId) {
+      state.tasks = state.tasks.filter((task) => task.id !== taskId);
+    },
     toggleTask(state, taskId) {
       const task = state.tasks.find((task) => task.id === taskId);
       if (task) {
         task.completed = !task.completed;
+        state.completedTasks = task;
       }
     },
     addToCart(state, productId) {
@@ -62,6 +64,9 @@ export default new Vuex.Store({
   actions: {
     addTask({ commit }, text) {
       commit("addTask", text);
+    },
+    removeTask({ commit }, taskId) {
+      commit("removeTask", taskId);
     },
     toggleTask({ commit }, taskId) {
       commit("toggleTask", taskId);

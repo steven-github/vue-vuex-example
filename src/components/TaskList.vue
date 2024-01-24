@@ -1,43 +1,49 @@
 <template>
   <div>
-    <h2>Tasks</h2>
+    <h2>Incomplete Tasks</h2>
     <ul>
-      <li v-for="task in tasks" :key="task.id">
+      <li v-for="task in incompleteTasks" :key="task.id">
         <input
           type="checkbox"
           v-model="task.completed"
-          @change="toggleTask(task.id)"
+          @click="toggleTask(task.id)"
         />
         {{ task.text }}
       </li>
     </ul>
-    <h3>Completed Tasks</h3>
+    <h2>Completed Tasks</h2>
     <ul>
-      <li v-for="task in completedTasks" :key="task.id">{{ task.text }}</li>
+      <li v-for="task in completedTasks" :key="task.id">
+        <input
+          type="checkbox"
+          v-model="task.completed"
+          @click="toggleTask(task.id)"
+        />
+        <del>{{ task.text }}</del>
+        <button @click="removeTask(task.id)">Remove</button>
+      </li>
     </ul>
   </div>
 </template>
 
 <script>
-import { computed } from "vue";
-import { useStore } from "vuex";
-
 export default {
-  setup() {
-    const store = useStore();
-
-    const tasks = computed(() => store.state.tasks);
-    const completedTasks = computed(() => store.getters.completedTasks);
-
-    const toggleTask = (taskId) => {
-      store.dispatch("toggleTask", taskId);
-    };
-
-    return {
-      tasks,
-      completedTasks,
-      toggleTask,
-    };
+  computed: {
+    incompleteTasks() {
+      return this.$store.getters.incompleteTasks;
+    },
+    completedTasks() {
+      return this.$store.getters.completedTasks;
+    },
+  },
+  methods: {
+    toggleTask(taskId) {
+      console.log("toggleTask", taskId);
+      this.$store.dispatch("toggleTask", taskId);
+    },
+    removeTask(taskId) {
+      this.$store.dispatch("removeTask", taskId);
+    },
   },
 };
 </script>
